@@ -1,0 +1,19 @@
+Plans for a Minimal Viable Product...
+
+Description:
+Deliverable focused on the backend functionality of receiving and sending
+messages in real time.
+
+Features:
+- Real time text communication
+- Rendering text view and text input components
+- Connecting users via channel ID
+- Users are labeled in a conversation
+- Deployed demo
+
+Steps to achieving mvp:
+- Every client establishes a Go WebSocket with the server
+- React for UI components
+- Connect to a default channel at runtime
+- Label "me" only
+- Vercel or ...?

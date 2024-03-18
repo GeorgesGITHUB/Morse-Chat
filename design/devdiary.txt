@@ -1,0 +1,16 @@
+Development Diary
+Format is Date, Problem, Alternative, Outcome
+
+2024-03-16
+P: Choosing frontend tech
+A: NextJS, Angular, Vite
+O: Opted for Vite bundler despite React Doc recommending framework b/c it's light
+
+P: Need a communication protocol
+A: Web Socket, Pooling, gRPC
+O: Web Sockets are is duplex and is simpler to implement than gRPC
+
+2024-03-17
+P: Web Socket not working -> opening then closing
+A: Googling error msgs, debugging js client side, debugging golang backend
+O: On client, fixed insta socket cleanup & non json msg being sent from client
