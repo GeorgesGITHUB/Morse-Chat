@@ -32,6 +32,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 
     // Registering client's connection as true
 	clients[conn] = true
+	log.Println("Client connected")
 
 	//Reading client's message from the Web Socket
 	for {

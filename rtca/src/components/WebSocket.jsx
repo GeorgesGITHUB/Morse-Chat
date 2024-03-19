@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const WebSocketComponent = () => {
   const [socket, setSocket] = useState(null);
 
+  // Triggered on component mount
   useEffect(() => {
     //debugger
     // Establish WebSocket connection when component mounts
