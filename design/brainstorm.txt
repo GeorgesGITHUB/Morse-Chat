@@ -1,0 +1,14 @@
+List from brainstorming features, requirements, other aspects
+- Uniform and coherent styling of UI components
+- Sound, Visual feedback for actions, events
+- Whatsapp like UI layout
+- User Accounts, persistent
+- Group chats, persistent
+- Admin for group chats
+- Morse input & output : btn entry?
+- Bidirectional translation between Morse and ASCII
+- Notifications
+- Morse code to Sound, played manually, on gc open, on notification
+- Routines for user<=>db persistence and client caching
+- Other client platforms ... IOS, Android
+- Reactive to changes in viewing window, device type

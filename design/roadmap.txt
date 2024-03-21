@@ -1,0 +1,17 @@
+Collection of actionable items, organized by releases
+
+initLayout: foundational UI subject to future iterations
+- Layout proportions like Whatsapp
+- Components for UI elements
+- Styling for layout and components
+
+Morse: implementation of input, output, translation and sound
+
+profile: Modeling, component, styling
+
+login: creation, login, auth
+
+Persistence: Schemas, sending, fetching
+
+Orchestration: placement of CRUD and caching ops
+
