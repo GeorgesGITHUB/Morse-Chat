@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const WebSocketComponent = () => {
   const [socket, setSocket] = useState(null);
+  const [message, setMessage] = useState(null);
 
   // Triggered on component mount
   useEffect(() => {
-    //debugger
     // Establish WebSocket connection when component mounts
     const newSocket = new WebSocket('ws://localhost:8080/ws');
 
@@ -17,6 +17,7 @@ const WebSocketComponent = () => {
     // Event listener for received messages
     newSocket.onmessage = (event) => {
       console.log('Message received:', event.data);
+      setMessage(event.data)
     };
 
     // Event listener for connection close

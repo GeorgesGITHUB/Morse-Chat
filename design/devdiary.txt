@@ -16,13 +16,11 @@ A: Googling error msgs, debugging js client side, debugging golang backend
 O: On client, fixed insta socket cleanup & non json msg being sent from client
 
 2024-03-18
-P: WebSocket's received data isn't binded to a component
-A1: Copy WebSocket impl. in relevant component and prop drill when msg received
-A2: WebSocket as a service called by components
-A3: WebSocket -> Redux -> relevant components
-A4: WebSocket -> Redux -> Redis -> relevant components
+P: WebSocket's received data isn't binded to a componentd
+A1: WebSocket as a service called by components
+A2: WebSocket -> Redux -> relevant components
+A3: WebSocket -> Redux -> Redis -> relevant components
+A4: Switch to useWebSocket, enable share, bind lastJsonMsg to component
 O: 
-  A1 leads to complexity issues when code is copied excessively 
-  A2
-  A3
-  A4 is beyond the current the scale of an mvp
+  A4 auto manages reconnecting, subbing to shared ws, + convenience
+  and A2 & A3 are beyond the scope of an mvp

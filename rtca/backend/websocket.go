@@ -33,6 +33,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
     // Registering client's connection as true
 	clients[conn] = true
 	log.Println("Client connected")
+	log.Println(clients)
 
 	//Reading client's message from the Web Socket
 	for {
@@ -51,6 +52,8 @@ func handleMessages() {
     //Writing to all client's Web Sockets
 	for {
 		msg := <-broadcast //blocking
+		log.Println("Messages")
+		log.Println(msg)
 		for client := range clients {
 			if err := client.WriteJSON(msg); err != nil {
 				log.Println("Error writing JSON:", err)
