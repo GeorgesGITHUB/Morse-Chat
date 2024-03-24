@@ -14,7 +14,8 @@ function App() {
     readyState
   } = useWebSocket(WS_URL, { share: true })
 
-  const [user, setUser] = useState('')
+  // replace initial value of user when login is implemented
+  const [user, setUser] = useState(Date.now().toString())
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
 
@@ -65,13 +66,6 @@ function App() {
         <Box sx={{ flex: 1, width: '80%'}}>
           {generateMessageBubbles()}
         </Box>
-        Temp username input box until login is implemented
-        <Input 
-          placeholder='type your name'
-          onChange={e => setUser(e.target.value)}
-          value={user}
-          sx={{width: "80%"}}
-        />
         <Stack
           direction="row"
           justifyContent="center"
