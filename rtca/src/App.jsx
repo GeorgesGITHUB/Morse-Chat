@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react'
 import './App.css'
+import { useEffect, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
+import { 
+  Box, Stack, Grid, Typography, Textarea, Button, Input
+  } from '@mui/joy'
+import MessageBubble from './components/MessageBubble'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -10,7 +14,8 @@ function App() {
     readyState
   } = useWebSocket(WS_URL, { share: true })
 
-  const [user, setUser] = useState('')
+  // replace initial value of user when login is implemented
+  const [user, setUser] = useState(Date.now().toString())
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
 
@@ -22,38 +27,70 @@ function App() {
 
   function handleSend() {
     sendJsonMessage({
-      Sender: user,
-      Content: msg
+      sender: user,
+      content: msg
     })
-    //Reset field of inputs
-    setUser('')
+    //Reset
     setMsg('')
+  }
+
+  function generateMessageBubbles(){
+    const list = msgHistory.map( (elem, index) => {
+      return (
+        <MessageBubble 
+          message={elem}
+          key={index}
+          myMessage={ elem.sender === user}
+        />
+      )
+    })
+
+    return list
+    
   }
 
   return (
     <>
-      <h1>MVP prototype</h1>
-      <p>Message Log</p>
-      <div className='msgLog'>
-        { msgHistory.map( (elem, id) => {
-          return <li key={id}>{elem.content}</li>
-        })}
-      </div>
-      <p>Enter your name</p>
-      <input 
-        type="text"
-        value={user}
-        onChange={e => setUser(e.target.value)}
-      />
-      <p>Enter a Message</p>
-      <textarea
-        value={msg}
-        onChange={e => setMsg(e.target.value)}
-      ></textarea>
-      <div>
-        <button onClick={handleSend}>Send Message</button>
-      </div>
-      
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        mx="25px"
+      >
+        <Typography
+          level="h1"
+        >
+          Joy UI-fication of Morse Chat
+        </Typography>
+        <Box sx={{ flex: 1, width: '80%'}}>
+          {generateMessageBubbles()}
+        </Box>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="flex-start"
+          spacing={2}
+          width="80%"
+          sx={{alignItems: 'stretch'}}
+        >
+          <Textarea
+            disabled={false}
+            minRows={2}
+            placeholder="Type Something..."
+            variant="outlined"
+            onChange={e => setMsg(e.target.value)}
+            value={msg}
+            sx={{flexGrow: 5}}
+          />
+          <Button
+              sx={{flexGrow: 1}}
+              onClick={handleSend}
+          >
+              Send
+          </Button>
+        </Stack>
+      </Stack>
     </>
   )
 }
