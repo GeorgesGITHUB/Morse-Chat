@@ -28,7 +28,9 @@ function App() {
   function handleSend() {
     sendJsonMessage({
       sender: user,
-      content: msg
+      contentRaw: msg,
+      contentText: '',
+      contentMorse: ''
     })
     //Reset
     setMsg('')

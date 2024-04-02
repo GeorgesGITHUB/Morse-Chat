@@ -18,7 +18,7 @@ function MessageBubble({message, id, myMessage}){
                         myMessage ? "soft" : "solid"
                     }
                 >
-                    {message.content}
+                    {message.contentRaw}
                 </Typography>
             </Box>
         </Stack>
