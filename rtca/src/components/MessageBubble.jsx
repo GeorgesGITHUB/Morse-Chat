@@ -1,12 +1,11 @@
 import { Box, Typography, Stack } from "@mui/joy";
 
-function MessageBubble({message, id, myMessage}){
-    console.log('As',message.sender,'myMessage is',myMessage)
+function MessageBubble({message, id, isMe}){
     return (
         <Stack
         direction="row"
         justifyContent={
-            myMessage ? "flex-end" : "flex-start"
+            isMe ? "flex-end" : "flex-start"
         }
         alignItems="center"
         spacing={0}
@@ -15,7 +14,7 @@ function MessageBubble({message, id, myMessage}){
                 <Typography
                     level="body-md"
                     variant={
-                        myMessage ? "soft" : "solid"
+                        isMe ? "soft" : "solid"
                     }
                 >
                     {message.contentRaw}

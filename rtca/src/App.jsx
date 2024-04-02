@@ -5,6 +5,7 @@ import {
   Box, Stack, Grid, Typography, Textarea, Button, Input
   } from '@mui/joy'
 import MessageBubble from './components/MessageBubble'
+import MessageBubbles from './components/MessageBubbles'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -14,8 +15,8 @@ function App() {
     readyState
   } = useWebSocket(WS_URL, { share: true })
 
-  // replace initial value of user when login is implemented
-  const [user, setUser] = useState(Date.now().toString())
+  // placeholder username generation. Replace when login,auth completed
+  const [username, setusername] = useState(Date.now().toString())
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
 
@@ -27,28 +28,13 @@ function App() {
 
   function handleSend() {
     sendJsonMessage({
-      sender: user,
+      sender: username,
       contentRaw: msg,
       contentText: '',
       contentMorse: ''
     })
     //Reset
     setMsg('')
-  }
-
-  function generateMessageBubbles(){
-    const list = msgHistory.map( (elem, index) => {
-      return (
-        <MessageBubble 
-          message={elem}
-          key={index}
-          myMessage={ elem.sender === user}
-        />
-      )
-    })
-
-    return list
-    
   }
 
   return (
@@ -65,9 +51,11 @@ function App() {
         >
           Joy UI-fication of Morse Chat
         </Typography>
-        <Box sx={{ flex: 1, width: '80%'}}>
-          {generateMessageBubbles()}
-        </Box>
+        <MessageBubbles
+          messages={msgHistory}
+          username={username}
+        >
+        </MessageBubbles>
         <Stack
           direction="row"
           justifyContent="center"
