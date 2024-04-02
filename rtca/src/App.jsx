@@ -2,10 +2,11 @@ import './App.css'
 import { useEffect, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { 
-  Box, Stack, Grid, Typography, Textarea, Button, Input
+  Box, Stack, Grid, Typography
   } from '@mui/joy'
 import MessageBubble from './components/MessageBubble'
 import MessageBubbles from './components/MessageBubbles'
+import InputArea from './components/InputArea'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -56,30 +57,12 @@ function App() {
           username={username}
         >
         </MessageBubbles>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-          width="80%"
-          sx={{alignItems: 'stretch'}}
+        <InputArea
+          handleSend={handleSend}
+          msg={msg}
+          setMsg={setMsg}
         >
-          <Textarea
-            disabled={false}
-            minRows={2}
-            placeholder="Type Something..."
-            variant="outlined"
-            onChange={e => setMsg(e.target.value)}
-            value={msg}
-            sx={{flexGrow: 5}}
-          />
-          <Button
-              sx={{flexGrow: 1}}
-              onClick={handleSend}
-          >
-              Send
-          </Button>
-        </Stack>
+        </InputArea>
       </Stack>
     </>
   )
