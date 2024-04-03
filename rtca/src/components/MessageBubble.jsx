@@ -1,8 +1,5 @@
-import { Box, Typography, Stack, IconButton } from "@mui/joy";
-import { Button } from '@mui/base/Button';
+import { Box, Typography, Stack } from "@mui/joy";
 import { useEffect, useState } from "react";
-import CachedIcon from '@mui/icons-material/Cached';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import MessageOptions from "./MessageOptions";
 
 function MessageBubble({message, id, isMe, displayMorse}){
@@ -33,7 +30,7 @@ function MessageBubble({message, id, isMe, displayMorse}){
                 hovering && isMe && 
                 <MessageOptions
                     handleTranslateToggle={localDisplayMorseToggler}
-                    handlePlaySound={ ()=> console.log('play sound')}
+                    morseString={message.contentMorse}
                 />
             }
             <Box key={id} >
@@ -50,7 +47,7 @@ function MessageBubble({message, id, isMe, displayMorse}){
                 hovering && !isMe && 
                 <MessageOptions
                     handleTranslateToggle={localDisplayMorseToggler}
-                    handlePlaySound={ ()=> console.log('play sound')}
+                    morseString={message.contentMorse}
                 />
             }
         </Stack>

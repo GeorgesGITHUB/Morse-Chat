@@ -66,7 +66,7 @@ function App() {
           <Typography
             level="h1"
           >
-            Joy UI-fication of Morse Chat
+            Morse Chat
           </Typography>
           <MessageBubbles
             messages={msgHistory}
