@@ -1,10 +1,10 @@
 import { Stack, IconButton } from "@mui/joy"
 import CachedIcon from '@mui/icons-material/Cached';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import test from "./Audio";
+import playMorse from "./Audio";
 
 function MessageOptions({handleTranslateToggle, morseString}) {
-    const handlePlaySound = () => test(morseString)
+    const handlePlaySound = () => playMorse(morseString)
     return (
         <Stack
             direction="column"
