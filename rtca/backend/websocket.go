@@ -12,14 +12,8 @@ var upgrader = websocket.Upgrader{
 		return true //Any origin is allowed
 	},
 }
-
 var clients = make(map[*websocket.Conn]bool) // key points to a Web Socket
 var broadcast = make(chan Message)
-
-type Message struct { // Custom type for messages
-	Sender    string `json:"sender"`
-	Content   string `json:"content"`
-}
 
 func handleConnections(w http.ResponseWriter, r *http.Request) {
 	//Initial Client Web Socket Connection
@@ -43,6 +37,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 			delete(clients, conn)
 			return
 		}
+		msg.fillMissingUsingRaw()
 		broadcast <- msg //blocking
 		log.Println("Server received", msg)
 	}

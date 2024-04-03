@@ -2,9 +2,11 @@ import './App.css'
 import { useEffect, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { 
-  Box, Stack, Grid, Typography, Textarea, Button, Input
+  Box, Stack, Grid, Typography, Divider
   } from '@mui/joy'
-import MessageBubble from './components/MessageBubble'
+import MessageBubbles from './components/MessageBubbles'
+import InputArea from './components/InputArea'
+import Sidebar from './components/Sidebar'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -14,10 +16,11 @@ function App() {
     readyState
   } = useWebSocket(WS_URL, { share: true })
 
-  // replace initial value of user when login is implemented
-  const [user, setUser] = useState(Date.now().toString())
+  // placeholder username generation. Replace when login,auth completed
+  const [username, setusername] = useState(Date.now().toString())
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
+  const [displayMorse, setDisplayMorse] = useState(false)
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
@@ -27,70 +30,58 @@ function App() {
 
   function handleSend() {
     sendJsonMessage({
-      sender: user,
-      content: msg
+      sender: username,
+      contentRaw: msg,
+      contentText: '',
+      contentMorse: ''
     })
     //Reset
     setMsg('')
   }
 
-  function generateMessageBubbles(){
-    const list = msgHistory.map( (elem, index) => {
-      return (
-        <MessageBubble 
-          message={elem}
-          key={index}
-          myMessage={ elem.sender === user}
-        />
-      )
-    })
-
-    return list
-    
+  function displayMorseToggler() {
+    setDisplayMorse( prev => !prev)
   }
 
   return (
     <>
       <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
         spacing={2}
-        mx="25px"
+        divider={<Divider orientation='vertical'></Divider>}
       >
-        <Typography
-          level="h1"
-        >
-          Joy UI-fication of Morse Chat
-        </Typography>
-        <Box sx={{ flex: 1, width: '80%'}}>
-          {generateMessageBubbles()}
-        </Box>
+        <Sidebar 
+          displayMorse={displayMorse}
+          btnOnClickHandler={displayMorseToggler}
+        ></Sidebar>
         <Stack
-          direction="row"
+          direction="column"
           justifyContent="center"
-          alignItems="flex-start"
+          alignItems="center"
           spacing={2}
-          width="80%"
-          sx={{alignItems: 'stretch'}}
+          mx="25px"
         >
-          <Textarea
-            disabled={false}
-            minRows={2}
-            placeholder="Type Something..."
-            variant="outlined"
-            onChange={e => setMsg(e.target.value)}
-            value={msg}
-            sx={{flexGrow: 5}}
-          />
-          <Button
-              sx={{flexGrow: 1}}
-              onClick={handleSend}
+          <Typography
+            level="h1"
           >
-              Send
-          </Button>
+            Morse Chat
+          </Typography>
+          <MessageBubbles
+            messages={msgHistory}
+            username={username}
+            displayMorse={displayMorse}
+          >
+          </MessageBubbles>
+          <InputArea
+            handleSend={handleSend}
+            msg={msg}
+            setMsg={setMsg}
+          >
+          </InputArea>
         </Stack>
-      </Stack>
+        </Stack>
     </>
   )
 }
