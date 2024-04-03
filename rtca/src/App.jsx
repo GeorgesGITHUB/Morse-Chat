@@ -44,9 +44,8 @@ function App() {
         direction="row"
         justifyContent="flex-start" // X Axis
         alignItems="flex-start"     // Y Axis
-        spacing={2}
+        spacing={1}
         divider={<Divider orientation='vertical'></Divider>}
-        sx={{margin: "3%"}}
       >
         <Sidebar 
           displayMorse={displayMorse}
