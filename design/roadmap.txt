@@ -1,17 +1,41 @@
-Collection of actionable items, organized by releases
+Collection of categorized items
 
 initLayout: foundational UI subject to future iterations
 - Layout proportions like Whatsapp
 - Components for UI elements
 - Styling for layout and components
 
-Morse: implementation of input, output, translation and sound
+Morse Encoding/Decoding: translation and sound
+- Morse Encoding/Decoding logic API in Go
+- Play morse btn
+- Play morse code via AudioContext oscillator, based on morse str value
+- Translate toggle btn
+- Translate all toggle btn
 
-profile: Modeling, component, styling
+Morse Dial:
+- Btn for Dah and Dit
+- interprets space between letter and word
+
+Group Chats: (go cloud might be useful)
+- use pub/sub logic in go
+- update persistence and cache
+
+
+profile: Data Modeling, component, styling
 
 login: creation, login, auth
 
-Persistence: Schemas, sending, fetching
+Persistence: (go cloud might be useful)
+- Go API functions for CRUD operations (or use postgres DB client)
+- Schemas:
+    user{ id, name}, 
+    message{ id, senderID, roomID, 
+        content{ 
+            morse, text
+        },
+    },
+    room{ id, name}, userRoom{ userID, roomID},
 
 Orchestration: placement of CRUD and caching ops
+- Functions to connect received/sent data to cache (Redis most likely)
 

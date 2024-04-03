@@ -1,12 +1,9 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
-import { 
-  Box, Stack, Grid, Typography, Divider
-  } from '@mui/joy'
-import MessageBubbles from './components/MessageBubbles'
-import InputArea from './components/InputArea'
+import { Stack, Divider } from '@mui/joy'
 import Sidebar from './components/Sidebar'
+import ChatArea from './components/ChatArea'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -39,48 +36,30 @@ function App() {
     setMsg('')
   }
 
-  function displayMorseToggler() {
-    setDisplayMorse( prev => !prev)
-  }
+  const displayMorseToggler=()=>setDisplayMorse( prev => !prev)
 
   return (
     <>
       <Stack
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        justifyContent="flex-start" // X Axis
+        alignItems="flex-start"     // Y Axis
         spacing={2}
         divider={<Divider orientation='vertical'></Divider>}
+        sx={{margin: "3%"}}
       >
         <Sidebar 
           displayMorse={displayMorse}
           btnOnClickHandler={displayMorseToggler}
-        ></Sidebar>
-        <Stack
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-          mx="25px"
-        >
-          <Typography
-            level="h1"
-          >
-            Morse Chat
-          </Typography>
-          <MessageBubbles
-            messages={msgHistory}
-            username={username}
-            displayMorse={displayMorse}
-          >
-          </MessageBubbles>
-          <InputArea
-            handleSend={handleSend}
-            msg={msg}
-            setMsg={setMsg}
-          >
-          </InputArea>
-        </Stack>
+        />
+        <ChatArea
+          msgHistory={msgHistory}
+          username={username}
+          displayMorse={displayMorse}
+          handleSend={handleSend}
+          msg={msg}
+          setMsg={setMsg}
+        />
         </Stack>
     </>
   )

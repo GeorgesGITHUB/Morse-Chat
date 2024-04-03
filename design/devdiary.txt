@@ -21,3 +21,11 @@ A4: Switch to useWebSocket, enable share, bind lastJsonMsg to component
 O: 
   A4 auto manages reconnecting, subbing to shared ws, + convenience
   and A2 & A3 are beyond the scope of an mvp
+
+P: Child components btn onClick sets parent's state, triggering error.
+Findings after investigating
+  Concurent onClick events are manipulating a shared state using setState.
+  React's setState callback doesn't guarantee synchronization.
+  This can lead to a race condition between all the async calls.
+A: Provide the child with an update func in place of setState
+O: Works
