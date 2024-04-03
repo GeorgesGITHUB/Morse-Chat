@@ -7,7 +7,8 @@ With a morse twist!
 
 # Screenshot(s)
 Client apps communicating
-![image](https://github.com/GeorgesGITHUB/Morse-Chat/assets/31967906/412e5bb7-672e-4631-9d5c-742b2353e819)
+![image](https://github.com/GeorgesGITHUB/Morse-Chat/assets/31967906/1f6c377d-eedd-4fcf-b92e-a5e71ce6c434)
+
 
 Run time logs
 ![image](https://github.com/GeorgesGITHUB/Morse-Chat/assets/31967906/3233dc6d-6c61-4b62-a13e-0c950e793b1e)
