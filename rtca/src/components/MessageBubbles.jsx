@@ -1,7 +1,7 @@
 import { Box } from "@mui/joy"
 import MessageBubble from "./MessageBubble"
 
-function MessageBubbles({messages, username}){
+function MessageBubbles({messages, username, displayMorse}){
     return(
         <Box sx={{ flex: 1, width: '80%'}}>
             {
@@ -11,6 +11,7 @@ function MessageBubbles({messages, username}){
                         message={elem}
                         key={index}
                         isMe={ elem.sender === username}
+                        displayMorse={displayMorse}
                       />
                     )
                 })

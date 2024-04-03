@@ -22,6 +22,7 @@ function InputArea({handleSend, msg, setMsg}){
             <Button
                 sx={{flexGrow: 1}}
                 onClick={handleSend}
+                disabled= {msg===""}
             >
                 Send
             </Button>

@@ -2,11 +2,11 @@ import './App.css'
 import { useEffect, useState } from 'react'
 import useWebSocket from 'react-use-websocket'
 import { 
-  Box, Stack, Grid, Typography
+  Box, Stack, Grid, Typography, Divider
   } from '@mui/joy'
-import MessageBubble from './components/MessageBubble'
 import MessageBubbles from './components/MessageBubbles'
 import InputArea from './components/InputArea'
+import Sidebar from './components/Sidebar'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -20,6 +20,7 @@ function App() {
   const [username, setusername] = useState(Date.now().toString())
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
+  const [displayMorse, setDisplayMorse] = useState(false)
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
@@ -38,32 +39,49 @@ function App() {
     setMsg('')
   }
 
+  function displayMorseToggler() {
+    setDisplayMorse( prev => !prev)
+  }
+
   return (
     <>
       <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
         spacing={2}
-        mx="25px"
+        divider={<Divider orientation='vertical'></Divider>}
       >
-        <Typography
-          level="h1"
+        <Sidebar 
+          displayMorse={displayMorse}
+          btnOnClickHandler={displayMorseToggler}
+        ></Sidebar>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          mx="25px"
         >
-          Joy UI-fication of Morse Chat
-        </Typography>
-        <MessageBubbles
-          messages={msgHistory}
-          username={username}
-        >
-        </MessageBubbles>
-        <InputArea
-          handleSend={handleSend}
-          msg={msg}
-          setMsg={setMsg}
-        >
-        </InputArea>
-      </Stack>
+          <Typography
+            level="h1"
+          >
+            Joy UI-fication of Morse Chat
+          </Typography>
+          <MessageBubbles
+            messages={msgHistory}
+            username={username}
+            displayMorse={displayMorse}
+          >
+          </MessageBubbles>
+          <InputArea
+            handleSend={handleSend}
+            msg={msg}
+            setMsg={setMsg}
+          >
+          </InputArea>
+        </Stack>
+        </Stack>
     </>
   )
 }
