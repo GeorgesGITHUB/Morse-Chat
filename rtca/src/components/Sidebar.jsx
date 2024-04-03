@@ -1,4 +1,5 @@
 import { Stack, Button } from "@mui/joy"
+
 function Sidebar({displayMorse, btnOnClickHandler}){
     return (
         <Stack
@@ -6,10 +7,11 @@ function Sidebar({displayMorse, btnOnClickHandler}){
             justifyContent="center"
             alignItems="center"
             spacing={1}
+            sx={{minWidth: "15%", marginTop: "5% !important", marginBottom: "5% !important"}}
         >
             <Button onClick={btnOnClickHandler}>
                 {
-                    displayMorse ? "Text" : "Morse"
+                    displayMorse ? "To Text" : "To Morse"
                 }
             </Button>
         </Stack>

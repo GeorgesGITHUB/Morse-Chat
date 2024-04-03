@@ -7,8 +7,7 @@ function InputArea({handleSend, msg, setMsg}){
         justifyContent="center"
         alignItems="flex-start"
         spacing={2}
-        width="80%"
-        sx={{alignItems: 'stretch'}}
+        width="85%"
         >
             <Textarea
             disabled={false}
@@ -20,7 +19,6 @@ function InputArea({handleSend, msg, setMsg}){
             sx={{flexGrow: 5}}
             />
             <Button
-                sx={{flexGrow: 1}}
                 onClick={handleSend}
                 disabled= {msg===""}
             >

@@ -11,7 +11,7 @@ function ChatArea({
             justifyContent="center"
             alignItems="center"
             spacing={2}
-            sx={{minWidth: "100%"}}
+            sx={{minWidth: "85%"}}
         >
             <Typography level="h1">Morse Chat</Typography>
             <MessageBubbles
