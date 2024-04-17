@@ -59,6 +59,8 @@ func handleMessages() {
 }
 
 func main() {
+	mainRoutine() //testing db
+	
 	//Invokes Web Socket connection
 	http.HandleFunc("/ws", handleConnections) //forever looping
 	go handleMessages()                       	 //forever looping
