@@ -8,40 +8,60 @@ import (
     "os"
     "github.com/joho/godotenv"
 )
-// will be a struct with member bar + functions, like messageType.go
 
-func testRDS(){
+type AWS_RDS struct {
+    pg *sql.DB
+}
+
+const (
+    masterUsername = "postgres"
+    endpoint = "pg-db-1.c9mk0csuwqro.us-east-2.rds.amazonaws.com"
+    port = "5432"
+    databaseName = "postgres"
+    driverName = "postgres"
+)
+
+//var users = make(map[int]string)
+
+func (rds *AWS_RDS) openConnection(){
     err := godotenv.Load()
     if err != nil {
         log.Fatal("Error loading .env file:", err)
     }
 
-    connectionString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-        "postgres", // Master username
-        os.Getenv("MASTER_PASSWORD"), // Master password
-        "pg-db-1.c9mk0csuwqro.us-east-2.rds.amazonaws.com", // Host Endpoint
-        "5432", // Port Number
-        "postgres", // Database Name
+    connectionString := fmt.Sprintf(
+        "postgres://%s:%s@%s:%s/%s?sslmode=disable",
+        masterUsername,
+        os.Getenv("MASTER_PASSWORD"),
+        endpoint,
+        port,
+        databaseName,
     )
 
     // Open a connection to the database
-    db, err := sql.Open("postgres", connectionString)
+    rds.pg, err = sql.Open(driverName, connectionString)
     if err != nil {
         log.Println("Error opening db")
         log.Fatal(err)
     }
 
-    defer db.Close()
-
     // Ping the database to ensure the connection is successful
-    err = db.Ping()
+    err = rds.pg.Ping()
     if err != nil {
         log.Println("Error pinging db")
         log.Fatal(err)
     }
 
-    // Create Users table
-	_, err = db.Exec(`
+    log.Println("Successfully connected to AWS RDS PostgreSQL")
+}
+
+// Defer call closeConnection() after openConnection()
+func (rds *AWS_RDS) closeConnection(){
+    rds.pg.Close()
+}
+
+func (rds *AWS_RDS) createUsersTable(){
+	_, err := rds.pg.Exec(`
         CREATE TABLE IF NOT EXISTS Users (
             user_id SERIAL PRIMARY KEY,
             username VARCHAR(255) NOT NULL
@@ -50,10 +70,11 @@ func testRDS(){
     if err != nil {
         log.Fatal("Error creating Users table:", err)
     }
-    fmt.Println("Users table created successfully")
+    log.Println("Successfully created Users table")
+}
 
-    // Create Messages table
-    _, err = db.Exec(`
+func (rds *AWS_RDS) createMessagesTable(){
+    _, err := rds.pg.Exec(`
         CREATE TABLE IF NOT EXISTS Messages (
             message_id SERIAL PRIMARY KEY,
             sender_id INT NOT NULL,
@@ -67,56 +88,59 @@ func testRDS(){
     if err != nil {
         log.Fatal("Error creating Messages table:", err)
     }
-    fmt.Println("Messages table created successfully")
-
-    userID := addUser(db, "Geovani")
-    log.Println("Sucessfully","added user")
-    log.Println("user_id is",userID)
-
-    msgID := addMessage(db, userID, "some raw", "some text", "some Morse")
-    log.Println("Sucessfully","added message")
-    log.Println("msg_id is",msgID)
-
-    msgID = addMessage(db, userID, "some raw 2", "some text 2", "some Morse 2")
-    log.Println("Sucessfully","added message")
-    log.Println("msg_id is",msgID)
-
-    userID = addUser(db, "Jeff")
-    log.Println("Sucessfully","added user")
-    log.Println("user_id is",userID)
-
-    msgID = addMessage(db, userID, "some raw", "some text", "some Morse")
-    log.Println("Sucessfully","added message")
-    log.Println("msg_id is",msgID)
-
-    msgID = addMessage(db, userID, "some raw 2", "some text 2", "some Morse 2")
-    log.Println("Sucessfully","added message")
-    log.Println("msg_id is",msgID)
-
-
+    log.Println("Successfully created Messages table")
 }
 
-func addUser(db *sql.DB, username string) int {
+func (rds *AWS_RDS) addUser(username string) int {
 	var userID int
-	err := db.QueryRow(`
-        INSERT INTO Users (username) VALUES ($1) RETURNING user_id`, 
+	err := rds.pg.QueryRow(`
+        INSERT INTO Users (username) 
+        VALUES ($1) RETURNING user_id`, 
         username,
     ).Scan(&userID)
 
 	if err != nil {
 		log.Fatal("Error adding user:", err)
 	}
+
+    log.Printf("Successfully added User with user_id = %d", userID)
 	return userID
 }
 
-func addMessage(db *sql.DB, senderID int, contentRaw string, contentText string, contentMorse string) int {
-	var messageID int
-	err := db.QueryRow(`
-        INSERT INTO Messages (sender_id, contentRaw, contentText, contentMorse) VALUES ($1, $2, $3, $4) RETURNING message_id`, 
+func (rds *AWS_RDS) addMessage( senderID int, 
+    contentRaw string, contentText string, contentMorse string) int {
+
+	var message_id int
+	err := rds.pg.QueryRow(`
+        INSERT INTO Messages (sender_id, contentRaw, contentText, contentMorse) 
+        VALUES ($1, $2, $3, $4) RETURNING message_id`, 
         senderID, contentRaw, contentText, contentMorse,
-    ).Scan(&messageID)
+    ).Scan(&message_id)
+
 	if err != nil {
 		log.Fatal("Error adding message:", err)
 	}
-	return messageID
+
+    log.Printf("Successfully added Message with message_id = %d", message_id)
+	return message_id
+}
+
+// For testing
+func (rds *AWS_RDS) deleteAllTables(){
+    _, err := rds.pg.Exec(`
+        DROP TABLE public.messages;
+        DROP TABLE public.users;
+    `)
+    if err != nil {
+        log.Fatal("Error creating Messages table:", err)
+    }
+    log.Println("Successfully deleted all tables")
+}
+
+func (rds *AWS_RDS) getAllUserMessages(user_id int) []Message{
+    return nil
+}
+
+func (rds *AWS_RDS) getAllUserIDs() []int{
+    return nil
 }
