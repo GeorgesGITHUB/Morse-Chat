@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/gorilla/websocket"
+	"strconv"
 )
 
 type CommController struct {
@@ -59,12 +60,16 @@ func (cc *CommController) onClientConnect(
 	cc.listenForClient(conn) // Forever looping
 }
 
+//Reading from client's Web Socket
 func (cc *CommController) listenForClient(conn *websocket.Conn){
-	//Reading from client's Web Socket
-	for {
-		var msg Message
-		err := conn.ReadJSON(&msg) //blocking
+	var db AWS_RDS
+	db.openConnection()
+	defer db.closeConnection()
 
+	for {
+		var temp map[string]string // keys: sender_id, username, contentRaw
+		
+		err := conn.ReadJSON(&temp) //blocking
 		if err != nil {
 			log.Println("Failed reading JSON from Web Socket:", err)
 			delete(cc.clients, conn)
@@ -72,10 +77,21 @@ func (cc *CommController) listenForClient(conn *websocket.Conn){
 			return
 		}
 
-		msg.fillMissingUsingRaw()
-
-		// TODO
-			// Insert new message to table
+		var msg Message
+		msg.Message_id = 0
+		msg.Sender_id, err = strconv.Atoi(temp["sender_id"])
+		if err != nil {
+			log.Fatal("Failed to integer convert sender_id")
+		}
+		msg.ContentRaw = temp["contentRaw"]
+		msg.ContentText = toContentText(temp["contentRaw"])
+		msg.ContentMorse = toContentMorse(temp["contentRaw"])
+		msg.Message_id, msg.Timestamp = db.addMessage(
+			msg.Sender_id,
+			msg.ContentRaw,
+			msg.ContentText,
+			msg.ContentMorse,
+		)
 
 		cc.broadcast <- msg //blocking
 		log.Println("HTTP Server received", msg)
@@ -86,7 +102,7 @@ func (cc *CommController) broadcastToClients() {
     //Writing to all client Web Sockets
 	for {
 		msg := <-cc.broadcast //blocking
-		log.Println("Server sent", msg)
+		log.Println("Server broadcasted", msg)
 		for client := range cc.clients {
 			if err := client.WriteJSON(msg); err != nil {
 				log.Println("Error writing JSON:", err)

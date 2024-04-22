@@ -7,6 +7,7 @@ import (
     "fmt"
     "os"
     "github.com/joho/godotenv"
+    "time"
 )
 
 type AWS_RDS struct {
@@ -20,8 +21,6 @@ const (
     databaseName = "postgres"
     driverName = "postgres"
 )
-
-//var users = make(map[int]string)
 
 func (rds *AWS_RDS) openConnection(){
     err := godotenv.Load()
@@ -58,12 +57,48 @@ func (rds *AWS_RDS) openConnection(){
 // Defer call closeConnection() after openConnection()
 func (rds *AWS_RDS) closeConnection(){
     rds.pg.Close()
+    log.Println("Successfully closed connection to AWS RDS PostgreSQL")
+}
+
+func (rds *AWS_RDS) addUser(user_id int, username string) {
+	_, err := rds.pg.Exec(`
+        INSERT INTO Users (user_id, username) VALUES ($1, $2)`, 
+        user_id, username,
+    )
+
+	if err != nil {
+		log.Fatal("Error adding user:", err)
+	}
+
+    log.Println("Successfully added User")
+}
+
+func (rds *AWS_RDS) addMessage(
+    sender_id int,
+    contentRaw string, contentText string, contentMorse string,
+) (int, time.Time) {
+
+    var message_id int
+    var timestamp time.Time
+	err := rds.pg.QueryRow(`
+        INSERT INTO Messages 
+        (sender_id, contentRaw, contentText, contentMorse) 
+        VALUES ($1, $2, $3, $4) RETURNING message_id, timestamp`, 
+        sender_id, contentRaw, contentText, contentMorse,
+    ).Scan(&message_id, &timestamp)
+
+	if err != nil {
+		log.Fatal("Failed inserting to Messages table:", err)
+	}
+
+    log.Println("Successfully inserted to Message table")
+	return message_id, timestamp
 }
 
 func (rds *AWS_RDS) createUsersTable(){
 	_, err := rds.pg.Exec(`
         CREATE TABLE IF NOT EXISTS Users (
-            user_id SERIAL PRIMARY KEY,
+            user_id INT PRIMARY KEY NOT NULL,
             username VARCHAR(255) NOT NULL
         )
     `)
@@ -76,53 +111,20 @@ func (rds *AWS_RDS) createUsersTable(){
 func (rds *AWS_RDS) createMessagesTable(){
     _, err := rds.pg.Exec(`
         CREATE TABLE IF NOT EXISTS Messages (
-            message_id SERIAL PRIMARY KEY,
+            message_id SERIAL PRIMARY KEY NOT NULL,
             sender_id INT NOT NULL,
-            contentRaw TEXT,
-            contentText TEXT,
-            contentMorse TEXT,
+            contentRaw TEXT NOT NULL,
+            contentText TEXT NOT NULL,
+            contentMorse TEXT NOT NULL,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (sender_id) REFERENCES Users(user_id)
-        )
+        );
+        
     `)
     if err != nil {
         log.Fatal("Error creating Messages table:", err)
     }
     log.Println("Successfully created Messages table")
-}
-
-func (rds *AWS_RDS) addUser(username string) int {
-	var userID int
-	err := rds.pg.QueryRow(`
-        INSERT INTO Users (username) 
-        VALUES ($1) RETURNING user_id`, 
-        username,
-    ).Scan(&userID)
-
-	if err != nil {
-		log.Fatal("Error adding user:", err)
-	}
-
-    log.Printf("Successfully added User with user_id = %d", userID)
-	return userID
-}
-
-func (rds *AWS_RDS) addMessage( senderID int, 
-    contentRaw string, contentText string, contentMorse string) int {
-
-	var message_id int
-	err := rds.pg.QueryRow(`
-        INSERT INTO Messages (sender_id, contentRaw, contentText, contentMorse) 
-        VALUES ($1, $2, $3, $4) RETURNING message_id`, 
-        senderID, contentRaw, contentText, contentMorse,
-    ).Scan(&message_id)
-
-	if err != nil {
-		log.Fatal("Error adding message:", err)
-	}
-
-    log.Printf("Successfully added Message with message_id = %d", message_id)
-	return message_id
 }
 
 // For testing
@@ -135,12 +137,4 @@ func (rds *AWS_RDS) deleteAllTables(){
         log.Fatal("Error creating Messages table:", err)
     }
     log.Println("Successfully deleted all tables")
-}
-
-func (rds *AWS_RDS) getAllUserMessages(user_id int) []Message{
-    return nil
-}
-
-func (rds *AWS_RDS) getAllUserIDs() []int{
-    return nil
 }
