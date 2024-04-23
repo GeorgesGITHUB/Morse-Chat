@@ -12,3 +12,4 @@ List from brainstorming features, requirements, other aspects
 - Routines for user<=>db persistence and client caching
 - Other client platforms ... IOS, Android
 - Reactive to changes in viewing window, device type
+- Decouple Data model ( message{ ....} ) from React, Go, etc

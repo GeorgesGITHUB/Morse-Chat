@@ -12,30 +12,24 @@ Morse Encoding/Decoding: translation and sound
 - Translate toggle btn
 - Translate all toggle btn
 
-Morse Dial:
-- Btn for Dah and Dit
-- interprets space between letter and word
+Persistence V1:
+- Save Chat: After sending to all clients, post AWS RDS via Go Service
+- Schemas:
+    user{id, name}
+    message{id, senderID, raw, morse, plaintext, timestamp}
 
-Group Chats: (go cloud might be useful)
+Persistence V2:
+- Load chat logs via API call to Go Service connected to RDS
+
+Login: (NOT READY)
+- User creation
+- Authentication
+
+Cache (NOT READY)
+- Use Redis (stores in server memory, might use clusters)
+- Modify fetching Go service to check cache first
+
+(go cloud might be useful)
+Group Chats: (NOT READY)
 - use pub/sub logic in go
 - update persistence and cache
-
-
-profile: Data Modeling, component, styling
-
-login: creation, login, auth
-
-Persistence: (go cloud might be useful)
-- Go API functions for CRUD operations (or use postgres DB client)
-- Schemas:
-    user{ id, name}, 
-    message{ id, senderID, roomID, 
-        content{ 
-            morse, text
-        },
-    },
-    room{ id, name}, userRoom{ userID, roomID},
-
-Orchestration: placement of CRUD and caching ops
-- Functions to connect received/sent data to cache (Redis most likely)
-

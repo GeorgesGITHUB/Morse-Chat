@@ -1,17 +1,16 @@
 # Morse Chat (Work in Progress)
 A Real Time Chat App with a morse code twist! 
 
-Bidirectional communication between clients handled by a Go server, using Web Sockets. 
+Bidirectional communication between React clients handled by a Go server, using Web Sockets. 
 
 `Client1 <-ws-> Server <-ws-> Client2`
 
-Dynamically renders content of the React component as Plain Text or Morse Code, using states.
-
 Uses the Web Audio API (AudioContext, Oscillator, GainNode) to play Morse Code
 
-# How to run it
-1. Start the Go server in <code>/rtca/backend/</code> with <code>go run .</code>
-2. Start the React frontend in <code>/rtca/</code> with <code>npm run dev</code>
+Saves conversation messages and user info to an AWS RDS PostgreSQL database.
+
+Dynamically renders content of the React component as Plain Text or Morse Code, using states.
+
 
 # Screenshot(s)
 Client apps communicating
