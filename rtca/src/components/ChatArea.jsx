@@ -3,7 +3,7 @@ import MessageBubbles from "./MessageBubbles"
 import InputArea from "./InputArea"
 
 function ChatArea({
-    msgHistory, username, displayMorse, handleSend, msg, setMsg
+    msgHistory, user_id, displayMorse, handleSend, msg, setMsg
 }) {
     return (
         <Stack
@@ -16,7 +16,7 @@ function ChatArea({
             <Typography level="h1">Morse Chat</Typography>
             <MessageBubbles
             messages={msgHistory}
-            username={username}
+            user_id={user_id}
             displayMorse={displayMorse}
             >
             </MessageBubbles>

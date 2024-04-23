@@ -1,6 +1,8 @@
-import { Stack, Button } from "@mui/joy"
+import { Stack, Button, Typography, Divider } from "@mui/joy"
 
-function Sidebar({displayMorse, btnOnClickHandler}){
+function Sidebar({displayMorse, btnOnClickHandler,
+    loadProfilePreset1, loadProfilePreset2, loadProfilePreset3
+}){
     return (
         <Stack
             direction="column"
@@ -14,6 +16,13 @@ function Sidebar({displayMorse, btnOnClickHandler}){
                     displayMorse ? "To Text" : "To Morse"
                 }
             </Button>
+
+            <Divider></Divider>
+            <Typography>Select Profile</Typography>
+
+            <Button onClick={loadProfilePreset1}>Preset1</Button>
+            <Button onClick={loadProfilePreset2}>Preset2</Button>
+            <Button onClick={loadProfilePreset3}>Preset3</Button>
         </Stack>
     )
 }

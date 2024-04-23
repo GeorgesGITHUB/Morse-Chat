@@ -29,3 +29,17 @@ Findings after investigating
   This can lead to a race condition between all the async calls.
 A: Provide the child with an update func in place of setState
 O: Works
+
+P: Opening connection timeout for Go to AWS RDS PostgreSQL
+1. Separately tested the connection to the DB using DBeaver and got the timeout
+2. Created a security group in AWS to allow inbound connections to DB (not setup by default)
+P: When pinging the db --> pq: no pg_hba.conf entry for host
+A: Change from default param group
+O: Works!
+
+P: Errors and inconsistencies transporting and assigning to message type members
+Solution:
+  I gave the members expected types and only manipulated them 
+  where they were needed (SRP), instead of small manipulations across the code base
+Outcome:
+  Much easier to maintain.
