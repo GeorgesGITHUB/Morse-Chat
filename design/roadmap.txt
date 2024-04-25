@@ -18,8 +18,16 @@ Persistence V1:
     user{id, name}
     message{id, senderID, raw, morse, plaintext, timestamp}
 
-Persistence V2:
-- Load chat logs via API call to Go Service connected to RDS
+Deployment:
+- Separate Vercel Projects for frontend and backend
+- Separate both into different directories
+- Re-design to accomodate for downtime of either
+    - Explicit connect/reconnect buttons
+    - Reconnecting scripts with loading spinner displayed
+
+APIs (NOT READY)
+- Frontend requests Backend API (Go Service) for chat logs JSON
+- Secure the enpoints 
 
 Login: (NOT READY)
 - User creation
