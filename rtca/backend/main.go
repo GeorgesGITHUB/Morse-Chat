@@ -8,16 +8,16 @@ func main(){
 }
 
 func mainActual(){
-	log.Println("--- Setting up a fresh DB w/ Schemas ---")
-	var db AWS_RDS
-	db.openConnection()
-	db.deleteAllTables()
-	db.createUsersTable()
-	db.createMessagesTable()
-	db.addUser(613,"Georges")
-	db.addUser(961,"Elias")
-	db.addUser(627,"John")
-	db.closeConnection()
+	// log.Println("--- Setting up a fresh DB w/ Schemas ---")
+	// var db AWS_RDS
+	// db.openConnection()
+	// db.deleteAllTables()
+	// db.createUsersTable()
+	// db.createMessagesTable()
+	// db.addUser(613,"Georges")
+	// db.addUser(961,"Elias")
+	// db.addUser(627,"John")
+	// db.closeConnection()
 
 	log.Println("--- Starting main ---")
 	var cc CommController
