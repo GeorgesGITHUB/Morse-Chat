@@ -38,8 +38,23 @@ A: Change from default param group
 O: Works!
 
 P: Errors and inconsistencies transporting and assigning to message type members
-Solution:
+A:
   I gave the members expected types and only manipulated them 
   where they were needed (SRP), instead of small manipulations across the code base
-Outcome:
+O:
   Much easier to maintain.
+
+** Study on my Docker setup **
+Learned about multi stage building.
+What is it?
+  1. Use base image to for building app. 
+  2. Copy the output (binary) and discard dependencies and artifacts used to build it
+  3. Use smaller base image to run it (+ download only serve, for React)
+Benefits:
+  1. Smaller image side -> faster image pulls
+  2. Faster deployments (not applicable to mine since I cancelled deployments)
+  3. Improved security by reducing surface of attacks
+
+P: Backend container couldn't run the Go binary.
+A: Looked through the Docker docs for Go related tasks.
+O: Found Go env var to set target OS to linux, making go build its binary as linux compatible
