@@ -62,9 +62,9 @@ func (cc *CommController) onClientConnect(
 
 //Reading from client's Web Socket
 func (cc *CommController) listenForClient(conn *websocket.Conn){
-	var db AWS_RDS
-	db.openConnection()
-	defer db.closeConnection()
+	// var db AWS_RDS
+	// db.openConnection()
+	// defer db.closeConnection()
 
 	for {
 		var temp map[string]string // keys: sender_id, username, contentRaw
@@ -78,7 +78,6 @@ func (cc *CommController) listenForClient(conn *websocket.Conn){
 		}
 
 		var msg Message
-		msg.Message_id = 0
 		msg.Sender_id, err = strconv.Atoi(temp["sender_id"])
 		if err != nil {
 			log.Fatal("Failed to integer convert sender_id")
@@ -86,12 +85,14 @@ func (cc *CommController) listenForClient(conn *websocket.Conn){
 		msg.ContentRaw = temp["contentRaw"]
 		msg.ContentText = toContentText(temp["contentRaw"])
 		msg.ContentMorse = toContentMorse(temp["contentRaw"])
-		msg.Message_id, msg.Timestamp = db.addMessage(
-			msg.Sender_id,
-			msg.ContentRaw,
-			msg.ContentText,
-			msg.ContentMorse,
-		)
+
+	// Broken while AWS is shut off
+		// msg.Message_id, msg.Timestamp = db.addMessage(
+		// 	msg.Sender_id,
+		// 	msg.ContentRaw,
+		// 	msg.ContentText,
+		// 	msg.ContentMorse,
+		// )
 
 		cc.broadcast <- msg //blocking
 		log.Println("HTTP Server received", msg)
