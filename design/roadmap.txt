@@ -19,18 +19,15 @@ Persistence V1:
     message{id, senderID, raw, morse, plaintext, timestamp}
 
 Dockerfication: Automation of setup, build and run processes
-- PrePatching for compatibility
-    - Put a placeholder login screen to ditch profile preset btns
-- Setup Docker containers for frontend, backend, and PostgreSQL DB
-- fontend container is loaded w/ profile as env values (discard when login implemented)
-- Build scripts for frontend and backend to run on the container environments
+- Setup Docker containers for frontend, backend
 - Create an ez single execution to run the whole thing for devs or repo visitors
 
 CI: (No CD b/c deployment cancelled)
-- On git push, run test scripts
+- On git push, run test scripts on frontend & backend containers
 
 Persistence V2:
 - Replace AWS RDS dependency for a generic one
+- Dockerize
 
 Deployment: (CANCELLED DUE TO AWS COSTs $$$)
 - Separate Vercel Projects for frontend and backend
