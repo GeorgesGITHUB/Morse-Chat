@@ -2,9 +2,9 @@ package main
 
 import "log"
 
-
 func main(){ 
-	mainActual() 
+	// mainActual()
+	//testDB()
 }
 
 func mainActual(){
@@ -25,17 +25,17 @@ func mainActual(){
 }
 
 func testDB() {
-	log.Println("--- Starting testDB Routine ---")
-	var db AWS_RDS
-	db.openConnection()
-	defer db.closeConnection()
-	db.deleteAllTables()
-	db.createUsersTable()
-	db.createMessagesTable()
-	db.addUser(961,"Georges")
-	db.addUser(627,"John")
-	message_id, timestamp:=db.addMessage(961,"raw","text","morse")
-	log.Println("message_id", message_id, "timestamp:",timestamp)
-	message_id, timestamp=db.addMessage(627,"raw","text","morse")
-	log.Println("message_id", message_id, "timestamp:",timestamp)
+	// log.Println("--- Starting testDB Routine ---")
+	// var db AWS_RDS
+	// db.openConnection()
+	// defer db.closeConnection()
+	// db.deleteAllTables()
+	// db.createUsersTable()
+	// db.createMessagesTable()
+	// db.addUser(961,"Georges")
+	// db.addUser(627,"John")
+	// message_id, timestamp:=db.addMessage(961,"raw","text","morse")
+	// log.Println("message_id", message_id, "timestamp:",timestamp)
+	// message_id, timestamp=db.addMessage(627,"raw","text","morse")
+	// log.Println("message_id", message_id, "timestamp:",timestamp)
 }

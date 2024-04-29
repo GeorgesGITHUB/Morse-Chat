@@ -1,5 +1,6 @@
-Collection of categorized items
+Collection of Release plans
 
+---------------------------- Releases ----------------------------
 initLayout: foundational UI subject to future iterations
 - Layout proportions like Whatsapp
 - Components for UI elements
@@ -22,42 +23,51 @@ Dockerfication: Automation of setup, build and run processes
 - Setup Docker containers for frontend, backend
 - Create an ez single execution to run the whole thing for devs or repo visitors
 
-CI: (No CD b/c deployment cancelled)
-- On git push, run test scripts on frontend & backend containers
+---------------------------- Active ----------------------------
 
 Persistence V2:
 - Replace AWS RDS dependency for a generic one
 - Dockerize
 
-Deployment: (CANCELLED DUE TO AWS COSTs $$$)
+---------------------------- Drafts ----------------------------
+
+Login:
+- User creation
+- Authentication
+
+APIs
+- Frontend requests Backend API (Go Service) for chat logs JSON
+- Secure the enpoints
+
+Test and CI: (No CD b/c deployment cancelled)
+- Go and React testing for UI, logic and network
+- On git push, run test scripts on frontend & backend containers
+
+
+Visual Logger: (Toggle btn + large text field)
+- displays logs in a frontend & backend box on screen
+to give technical insight for the dev viewing it
+- Use a dedicated ws to transfer logs from Go to React
+
+Cache:
+- Use Redis (stores in server memory, might use clusters)
+- Modify fetching Go service to check cache first
+
+Messaging Change
+- Instead of ws, use a message broker (more scalable) for pub-sub
+    -> RabbitMQ, Apache Kafka, etc
+
+---------------------------- Cancelled ----------------------------
+
+Cancelled due to costs associated to deploying Go
+Deployment:
 - Separate Vercel Projects for frontend and backend
 - Separate both into different directories
 - Re-design to accomodate for downtime of either
     - Explicit connect/reconnect buttons
     - Reconnecting scripts with loading spinner displayed
 
-APIs (NOT READY)
-- Frontend requests Backend API (Go Service) for chat logs JSON
-- Secure the enpoints 
-
-Visual Logger (Toggle btn + large text field)
-- displays logs in a frontend & backend box on screen
-to give technical insight for the dev viewing it
-- Use a dedicated ws to transfer logs from Go to React
-
-Login: (NOT READY)
-- User creation
-- Authentication
-
-Messaging Change
-- Instead of ws, use a message broker (more scalable) for pub-sub
-    -> RabbitMQ, Apache Kafka, etc
-
-Cache (NOT READY)
-- Use Redis (stores in server memory, might use clusters)
-- Modify fetching Go service to check cache first
-
-(go cloud might be useful)
-Group Chats: (NOT READY)
+Cancelled due to time cost & feature/scope creep
+Group Chats:
 - use pub/sub logic in go
 - update persistence and cache
