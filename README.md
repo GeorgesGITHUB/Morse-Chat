@@ -29,5 +29,5 @@ Run time logs
 2. Change your current directory to the project's root folder, using `cd Morse-Chat`
 3. Create and run the Docker containers by pasting and running `docker-compose up`
 4. Have many chat clients by opening multiple browser tabs of `http://localhost:5173/`
-5. For each client, select a Profile Preset by clicking on one of the side bar buttons
+5. For each client, select a different Profile Preset by clicking on one of the side bar buttons
 6. Message away!
