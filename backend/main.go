@@ -1,7 +1,5 @@
 package main
 
-import "log"
-
 func main(){ 
 	mainActual()
 	//testDB()
@@ -9,7 +7,6 @@ func main(){
 
 //run differently depending if tables exist
 func mainActual(){
-	log.Println("--- Setting up a fresh DB w/ Schemas ---")
 	var db Database
 	db.OpenConnection()
 	db.CreateTables()
@@ -17,8 +14,6 @@ func mainActual(){
 	db.PostUser(961,"Elias")
 	db.PostUser(627,"John")
 	db.CloseConnection()
-
-	log.Println("--- Starting main ---")
 	var cc CommController
 	cc.Start()
 }

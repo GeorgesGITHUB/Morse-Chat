@@ -19,7 +19,7 @@ var upgrader = websocket.Upgrader{
 }
 
 func (cc *CommController) Start(){
-	cc.init()
+	cc.configure()
 
 	go cc.broadcastToClients() //loops until error
 	
@@ -28,7 +28,7 @@ func (cc *CommController) Start(){
 	
 }
 
-func (cc *CommController) init(){
+func (cc *CommController) configure(){
 	cc.clients = make(map[*websocket.Conn]bool) // key points to ws connection
 	cc.broadcast = make(chan Message)
 	log.Println("Allocated space for member variables")

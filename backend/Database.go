@@ -94,10 +94,11 @@ func (db *Database) PostUser(user_id int, username string) {
     )
 
 	if err != nil {
-		log.Fatal("Failed adding user:", err)
-	}
+		log.Println("Failed adding user:", err)
+	} else {
+        log.Println("Successfully added User")
+    }
 
-    log.Println("Successfully added User")
 }
 
 func (db *Database) PostMessage(
@@ -115,7 +116,7 @@ func (db *Database) PostMessage(
     ).Scan(&message_id, &timestamp)
 
 	if err != nil {
-		log.Fatal("Failed inserting to Messages table:", err)
+		log.Println("Failed inserting to Messages table:", err)
 	}
 
     log.Println("Successfully inserted to Message table")
@@ -123,8 +124,16 @@ func (db *Database) PostMessage(
 }
 
 func (db *Database) CreateTables(){
-    db.createUsersTable()
-    db.createMessagesTable()
+    exist,err:=db.tableExists("public","Users")  
+    if !exist || err!=nil {
+        db.createUsersTable()
+    }
+    
+    exist,err=db.tableExists("public","Messages")  
+    if !exist || err!=nil {
+        db.createMessagesTable()
+    }
+
 }
 
 func (db *Database) createUsersTable(){
@@ -159,7 +168,20 @@ func (db *Database) createMessagesTable(){
     log.Println("Successfully created Messages table")
 }
 
-// For testing
+func (db *Database) tableExists(schema, table string) (bool, error) {
+	query := fmt.Sprintf(`
+        SELECT EXISTS (
+            SELECT FROM information_schema.tables 
+            WHERE table_schema = '%s' AND table_name = '%s'
+        )`, schema, table)
+	var exists bool
+	err := db.postgres.QueryRow(query).Scan(&exists)
+	if err != nil {
+		return false, err
+	}
+	return exists, nil
+}
+
 func (db *Database) DeleteTables(){
     _, err := db.postgres.Exec(`
         DROP TABLE public.messages;
