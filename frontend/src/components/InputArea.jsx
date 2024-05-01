@@ -1,7 +1,8 @@
 import { Stack, Textarea ,Button } from "@mui/joy"
 
-function InputArea({handleSend, msg, setMsg}){
+function InputArea({handleSend, msg, setMsg, chosePreset}){
     return (
+        chosePreset &&
         <Stack
         direction="row"
         justifyContent="center"

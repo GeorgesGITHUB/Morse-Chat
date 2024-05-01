@@ -1,7 +1,7 @@
 import { Stack, Button, Typography, Divider } from "@mui/joy"
 
 function Sidebar({displayMorse, btnOnClickHandler,
-    loadProfilePreset1, loadProfilePreset2, loadProfilePreset3
+    loadProfilePreset1, loadProfilePreset2, loadProfilePreset3, chosePreset
 }){
     return (
         <Stack
@@ -18,11 +18,21 @@ function Sidebar({displayMorse, btnOnClickHandler,
             </Button>
 
             <Divider></Divider>
-            <Typography>Select Profile</Typography>
-
-            <Button onClick={loadProfilePreset1}>Preset1</Button>
-            <Button onClick={loadProfilePreset2}>Preset2</Button>
-            <Button onClick={loadProfilePreset3}>Preset3</Button>
+            
+            {//Remove btn group when login is implemented
+            !chosePreset&&
+            <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                spacing={1}
+            >
+                <Typography>Select Profile</Typography>
+                <Button onClick={loadProfilePreset1}>Preset1</Button>
+                <Button onClick={loadProfilePreset2}>Preset2</Button>
+                <Button onClick={loadProfilePreset3}>Preset3</Button>
+            </Stack>
+            }
         </Stack>
     )
 }
