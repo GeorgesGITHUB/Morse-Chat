@@ -12,7 +12,6 @@ func mainActual(){
 	log.Println("--- Setting up a fresh DB w/ Schemas ---")
 	var db Database
 	db.OpenConnection()
-	//db.DeleteTables()
 	db.CreateTables()
 	db.PostUser(613,"Georges")
 	db.PostUser(961,"Elias")

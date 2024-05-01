@@ -4,16 +4,9 @@ import (
 	"log"
 	"fmt"
 	"os"
-	// "github.com/joho/godotenv"
 )
 
 func connectionString(config string) string {
-	// Uncomment when testing outside of container
-	// err := godotenv.Load()
-    // if err != nil {
-    //     log.Fatal("Error loading .env file:", err)
-    // }
-	
 	switch config {
 	case "aws_rds":
 		log.Println("Creating connection string for",config)

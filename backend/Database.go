@@ -13,19 +13,19 @@ type Database struct {
 }
 
 const (
+    config = "dockered_postgres"
     driverName = "postgres"
+    maxAttempts= 10
+    initialDelay time.Duration = 1 * time.Second
+    maxDelay time.Duration = 30 * time.Second
 )
 
+// Open a connection to the database
 func (db *Database) OpenConnection(){
-    // Open a connection to the database
-    log.Println("DEBUG::",connectionString("dockered_postgres"))
-    maxAttempts := 10
-	initialDelay := 1 * time.Second
-	maxDelay := 30 * time.Second
     err := exponentialBackoff(maxAttempts, initialDelay, maxDelay, func() error {
         var err error
         db.postgres, err = sql.Open(
-            driverName, connectionString("dockered_postgres"),
+            driverName, connectionString(config),
         )
         if err != nil {
             log.Println("Failed opening Database:",err)
@@ -49,7 +49,10 @@ func (db *Database) OpenConnection(){
 
 }
 
-func exponentialBackoff(maxAttempts int, initialDelay time.Duration, maxDelay time.Duration, operation func() error) error {
+func exponentialBackoff(
+    maxAttempts int, initialDelay time.Duration, maxDelay time.Duration, 
+    operation func() error,
+) error {
     var (
         err          error
         retryAttempt int
@@ -67,11 +70,14 @@ func exponentialBackoff(maxAttempts int, initialDelay time.Duration, maxDelay ti
             delay = maxDelay
         }
 
-        log.Printf("Attempt %d failed. Retrying in %s...\n", retryAttempt+1, delay)
+        log.Printf(
+            "Attempt %d failed. Retrying in %s...\n", 
+            retryAttempt+1, delay,
+        )
         time.Sleep(delay)
     }
 
-    return fmt.Errorf("exceeded maximum number of attempts (%d)", maxAttempts)
+    return fmt.Errorf("exceeded max number of attempts (%d)", maxAttempts)
 }
 
 // Defer call closeConnection() after openConnection()
