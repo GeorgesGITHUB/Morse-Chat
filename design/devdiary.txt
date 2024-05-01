@@ -58,3 +58,24 @@ Benefits:
 P: Backend container couldn't run the Go binary.
 A: Looked through the Docker docs for Go related tasks.
 O: Found Go env var to set target OS to linux, making go build its binary as linux compatible
+
+P: 
+  On startup, backend (Go) container connects but fails pinging postgres container.
+  When I run go locally while postgres container is running, it works.
+A:
+  Postgres might not be ready, try Exponential backoff
+  How it works
+    Wait and retry, then again, and again, and again.
+    With every attempt to retry increase the wait time by a growth factor
+  Benefits
+    - Reduced Load
+    - Increased Success Rate (with every retry)
+    - Staggered retries avoids Thundering Herd Problem (not applicable here)
+A:
+  When pinging it logs "dial tcp 127.0.0.1:5432: connect: connection refused"
+  it indicates Go is attempting to connect to PostgreSQL at 127.0.0.1:5432,
+  but PostgreSQL runs on postgres instead of localhost, at port 5432.
+  Localhost is relative to the container/machine of the caller.
+  Therefore use host="postgres" instead of host="localhost" in the connection string
+O:
+  Implemented both alternatives and it works

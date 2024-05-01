@@ -12,12 +12,14 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
     ports:
       - "8080:8080"
 
   postgres:
     image: postgres:latest
     env_file:
-      - ./backend/database/postgresDocker.env
+      - ./backend/.env
     ports:
       - "5432:5432"

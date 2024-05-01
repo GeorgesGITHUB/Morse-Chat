@@ -62,9 +62,9 @@ func (cc *CommController) onClientConnect(
 
 //Reading from client's Web Socket
 func (cc *CommController) listenForClient(conn *websocket.Conn){
-	// var db AWS_RDS
-	// db.openConnection()
-	// defer db.closeConnection()
+	var db Database
+	db.OpenConnection()
+	defer db.CloseConnection()
 
 	for {
 		var temp map[string]string // keys: sender_id, username, contentRaw
@@ -86,13 +86,12 @@ func (cc *CommController) listenForClient(conn *websocket.Conn){
 		msg.ContentText = toContentText(temp["contentRaw"])
 		msg.ContentMorse = toContentMorse(temp["contentRaw"])
 
-	// Broken while AWS is shut off
-		// msg.Message_id, msg.Timestamp = db.addMessage(
-		// 	msg.Sender_id,
-		// 	msg.ContentRaw,
-		// 	msg.ContentText,
-		// 	msg.ContentMorse,
-		// )
+		msg.Message_id, msg.Timestamp = db.PostMessage(
+			msg.Sender_id,
+			msg.ContentRaw,
+			msg.ContentText,
+			msg.ContentMorse,
+		)
 
 		cc.broadcast <- msg //blocking
 		log.Println("HTTP Server received", msg)
