@@ -17,6 +17,8 @@ function App() {
   const [user_id, setUser_id] = useState(0)
   // placeholder username until login,auth complete
   const [username, setUsername] = useState('')
+  // placeholder username until login,auth complete
+  const [chosePreset, setChosePreset] = useState(false)
 
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
@@ -48,18 +50,21 @@ function App() {
   const loadProfilePreset1 = ()=> {
     setUser_id("613")
     setUsername("Georges")
+    setChosePreset(true)
     console.log("Loaded Preset 1")
   }
   // placeholder until user_id and username can be set by user
   const loadProfilePreset2 = ()=> {
     setUser_id("961")
     setUsername("Elias")
+    setChosePreset(true)
     console.log("Loaded Preset 2")
   }
   // placeholder until user_id and username can be set by user
   const loadProfilePreset3 = ()=> {
     setUser_id("627")
     setUsername("John")
+    setChosePreset(true)
     console.log("Loaded Preset 3")
   }
 
@@ -78,6 +83,7 @@ function App() {
           loadProfilePreset1={loadProfilePreset1}
           loadProfilePreset2={loadProfilePreset2}
           loadProfilePreset3={loadProfilePreset3}
+          chosePreset={chosePreset}
         />
         <ChatArea
           msgHistory={msgHistory}
@@ -86,6 +92,7 @@ function App() {
           handleSend={handleSend}
           msg={msg}
           setMsg={setMsg}
+          chosePreset={chosePreset}
         />
         </Stack>
     </>

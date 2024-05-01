@@ -3,7 +3,7 @@ import MessageBubbles from "./MessageBubbles"
 import InputArea from "./InputArea"
 
 function ChatArea({
-    msgHistory, user_id, displayMorse, handleSend, msg, setMsg
+    msgHistory, user_id, displayMorse, handleSend, msg, setMsg, chosePreset
 }) {
     return (
         <Stack
@@ -24,6 +24,7 @@ function ChatArea({
             handleSend={handleSend}
             msg={msg}
             setMsg={setMsg}
+            chosePreset={chosePreset}
             >
             </InputArea>
         </Stack>
