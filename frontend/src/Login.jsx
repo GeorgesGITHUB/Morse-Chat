@@ -14,18 +14,19 @@ function Login() {
             height="50vh" // % of the viewport
 
         >
-            <Typography level="h1">Morse Chat</Typography>
-            <Divider>Login</Divider>
+            <Divider>Morse Chat</Divider>
+            <Typography level="h1">Login</Typography>
             <Input
                 placeholder='Username'
                 onChange={e => setUsername(e.target.value)}
-            />
+                />
             <Button
                 disabled={username===''}
                 //onClick={}
-            >
+                >
                 Submit
             </Button>
+            <Divider/>
         </Stack>
     )
 }
