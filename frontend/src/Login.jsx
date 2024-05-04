@@ -1,9 +1,18 @@
 import { useState } from 'react'
 import { Button, Stack, Typography, Input, Divider } from '@mui/joy'
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
     const [username, setUsername] = useState('')
+    const navigate = useNavigate()
+
+    function handleSubmit(){
+        // Add authentication logic here
+        console.log('authentication logic missing')
+        
+        navigate('/app')
+    }
 
     return (
         <Stack
@@ -22,7 +31,7 @@ function Login() {
                 />
             <Button
                 disabled={username===''}
-                //onClick={}
+                onClick={handleSubmit}
                 >
                 Submit
             </Button>
