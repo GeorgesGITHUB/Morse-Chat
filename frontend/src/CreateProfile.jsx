@@ -12,7 +12,7 @@ function CreateProfile(){
 
     async function handleCreateProfile() {
         try {
-            const user_id = await fetchUserID(username,password)
+            await fetchUserID(username,password)
             setInputErr(true)
             setUsername('')
             setPassword('')
@@ -24,11 +24,14 @@ function CreateProfile(){
         try {
             console.log(`creating user ${username}`)
             await postUser(username,password)
+            console.log('fetching user_id')
+            const user_id = await fetchUserID(username,password)
             // Here until authentication is implemented
             // *******************************************
             sessionStorage.removeItem('user_id')
             sessionStorage.removeItem('username')
             sessionStorage.removeItem('password')
+            sessionStorage.setItem('user_id',user_id)
             sessionStorage.setItem('username',username)
             sessionStorage.setItem('password',password)
             // *******************************************
