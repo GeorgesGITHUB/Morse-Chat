@@ -109,7 +109,7 @@ func (db *Database) GetUser(username, password string) (int, error) {
         username, password).Scan(&userID)
     
     if err != nil {
-        return 0, err
+        return -1, err
     }
 
     return userID, nil
