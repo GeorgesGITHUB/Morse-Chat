@@ -87,18 +87,16 @@ func (db *Database) CloseConnection(){
     log.Println("Successfully closed connection to Database")
 }
 
-func (db *Database) PostUser(username, password string) {
+func (db *Database) PostUser(username, password string) error {
 	_, err := db.postgres.Exec(`
         INSERT INTO Users (username, password) VALUES ($1, $2)`, 
         username, password,
     )
 
 	if err != nil {
-		log.Println("Failed adding user:", err)
-	} else {
-        log.Println("Successfully added User")
-    }
-
+        return err
+	}
+    return nil
 }
 
 func (db *Database) GetUser(username, password string) (int, error) {

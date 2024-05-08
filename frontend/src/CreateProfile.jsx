@@ -1,29 +1,40 @@
 import { useState } from 'react'
 import { Button, Stack, Typography, Input, Divider } from '@mui/joy'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import postUser from './services/postUser';
 import fetchUserID from './services/fetchUserID';
 
-function Login() {
+function CreateProfile(){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [inputErr, setInputErr] = useState(false)
     const navigate = useNavigate()
 
-    async function handleLoginProfile(){
+    async function handleCreateProfile() {
         try {
             const user_id = await fetchUserID(username,password)
+            setInputErr(true)
+            setUsername('')
+            setPassword('')
+            return
+        } catch (error) {
+            console.log(`${username} does not exist`)
+        }
+
+        try {
+            console.log(`creating user ${username}`)
+            await postUser(username,password)
             // Here until authentication is implemented
             // *******************************************
             sessionStorage.removeItem('user_id')
             sessionStorage.removeItem('username')
             sessionStorage.removeItem('password')
-            sessionStorage.setItem('user_id',user_id)
             sessionStorage.setItem('username',username)
             sessionStorage.setItem('password',password)
             // *******************************************
             navigate('/app')
             
-        } catch (error) {
+        } catch (error) { // unlikely to catch
             console.error(error)
             setInputErr(true)
             setUsername('')
@@ -40,7 +51,7 @@ function Login() {
             height="50vh" // % of the viewport
         >
             <Divider>Morse Chat</Divider>
-            <Typography level="h1">Login</Typography>
+            <Typography level="h1">Create Profile</Typography>
             <Input
                 placeholder='Username'
                 value={username}
@@ -61,16 +72,20 @@ function Login() {
             />
             <Button
                 disabled={username===''||password===''}
-                onClick={handleLoginProfile}
+                onClick={handleCreateProfile}
             >
                 Submit
             </Button>
-            <Link to="/CreateProfile">
-                Don't have an account? Sign up
-            </Link>
             <Divider/>
+            { inputErr &&
+            <Typography
+                level='body-sm'
+                color='danger'
+            >
+                That username already exists
+            </Typography>}
         </Stack>
     )
 }
 
-export default Login
+export default CreateProfile

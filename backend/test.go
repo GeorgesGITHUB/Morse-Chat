@@ -6,6 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+type User struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func testingGin() {
 	router := gin.Default()
 
@@ -38,6 +44,29 @@ func testingGin() {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"user_id": strconv.Itoa(user_id)})
+	})
+
+//	http://localhost:8080/api/users
+    router.POST("/api/users", func(c *gin.Context) {
+        var newUser User
+		if err := c.BindJSON(&newUser); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+        username, password := newUser.Username, newUser.Password
+        
+		var db Database
+		db.OpenConnection()
+		defer db.CloseConnection()
+		
+		err := db.PostUser(username,password)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Failed posting User"})
+            return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Successfully posted User"})
 	})
 
     // Run the server on port 8080
