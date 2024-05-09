@@ -1,7 +1,11 @@
 # Morse Chat (See "How to run" section below)
 A Real Time Chat App with a morse code twist!
 
-Communication between **React** clients, managed by a **Go HTTP server**, using **concurrency**, and connected to clients via **Web Sockets**.
+Communication between many **React** clients connected to a single **Go HTTP server** (Backend) instance, via **Web Sockets**.
+
+The Backend **listens and broadcasts** messages **concurrently** using **Go Routines** and **Channels**.
+
+Frontend Services make **HTTP requests** to the Backend **API endpoints**, written using the **Gin** Framework in **Go**.
 
 Frontend and Backend are **Docker** containers built and served using a **multi-stage process**, with **ports** exposed to each other.
 
@@ -29,5 +33,3 @@ Run time logs
 2. Change your current directory to the project's root folder, using `cd Morse-Chat`
 3. Create and run the Docker containers by pasting and running `docker-compose up`
 4. Have many chat clients by opening multiple browser tabs of `http://localhost:5173/`
-5. For each client, select a different Profile Preset by clicking on one of the side bar buttons
-6. Message away!
