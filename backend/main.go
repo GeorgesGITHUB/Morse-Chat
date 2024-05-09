@@ -1,25 +1,20 @@
 package main
 
-import "log"
+import (
+	"log"
+	"github.com/gin-gonic/gin"
+)
 
 func main(){
-	testingGin()
-	//mainActual()
-	//testDB()
+	router := gin.Default()
+	enableCORS(router)
+	registerAPItoEndpoint(router)
+	registerWStoEndpoint(router)
+	
+	runGin(router, 8080)
 }
 
-//run differently depending if tables exist
-func mainActual(){
-	var db Database
-	db.OpenConnection()
-	db.CreateTables()
-	db.PostUser("Georges", "p1")
-	db.PostUser("Elias", "p2")
-	db.CloseConnection()
-	var cc CommController
-	cc.Start()
-}
-
+// use in a test suite later
 func testDB() {
 	log.Println("--- Starting testDB Routine ---")
 	var db Database

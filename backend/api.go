@@ -6,17 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// NOTE: Ordering of the functions represents the run order
 
-type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-func testingGin() {
-	router := gin.Default()
-
-	// Enable CORS
-    router.Use(func(c *gin.Context) {
+func enableCORS(router *gin.Engine) {
+	router.Use(func(c *gin.Context) {
         c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
         c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -27,7 +20,9 @@ func testingGin() {
         }
         c.Next()
     })
-	
+}
+
+func registerAPItoEndpoint(router *gin.Engine) {
 //	http://localhost:8080/api/users/id?username=Bob&password=p1
     router.GET("/api/users/id", func(c *gin.Context) {
 		username := c.Query("username")
@@ -48,13 +43,13 @@ func testingGin() {
 
 //	http://localhost:8080/api/users
     router.POST("/api/users", func(c *gin.Context) {
-        var newUser User
+        var newUser user
 		if err := c.BindJSON(&newUser); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-        username, password := newUser.Username, newUser.Password
+        username, password := newUser.username, newUser.password
         
 		var db Database
 		db.OpenConnection()
@@ -68,7 +63,14 @@ func testingGin() {
 
 		c.JSON(http.StatusOK, gin.H{"message": "Successfully posted User"})
 	})
+}
 
-    // Run the server on port 8080
-    router.Run(":8080")
+type user struct {
+	username string `json:"username"`
+	password string `json:"password"`
+}
+
+func runGin(router *gin.Engine, port int){
+	var str string = ":" + strconv.Itoa(port)
+	router.Run(str)
 }
