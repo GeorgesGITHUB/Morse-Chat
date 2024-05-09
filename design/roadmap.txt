@@ -35,14 +35,15 @@ Login:
         - create user using Go API (createProfile)
     - Refactors
         - Remove profile presets and related
-        
+
 ---------------------------- Drafts ----------------------------
 
-initMsgLoad: Frontend requests Backend API (Go Service) for chat logs JSON
+Restore Chat History: 
+- Frontend service requests and loads chat logs, from Backend API
 
 Test and CI: (No CD b/c deployment cancelled)
-- Go and React testing for UI, logic and network
-- On git push, run test scripts on frontend & backend containers
+- Test endpoints, services, components, functions
+- On git push, run test scripts on all containers
 
 Security:
 - Authentication (login)
@@ -73,5 +74,3 @@ Deployment:
 
 Cancelled due to time cost & feature/scope creep
 Group Chats:
-- use pub/sub logic in go
-- update persistence and cache
