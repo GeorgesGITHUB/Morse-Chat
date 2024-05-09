@@ -1,8 +1,9 @@
 package main
 
 import (
-	"strconv"
 	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -43,14 +44,14 @@ func registerAPItoEndpoint(router *gin.Engine) {
 
 //	http://localhost:8080/api/users
     router.POST("/api/users", func(c *gin.Context) {
-        var newUser user
+        var newUser User
 		if err := c.BindJSON(&newUser); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-        username, password := newUser.username, newUser.password
-        
+        username, password := newUser.Username, newUser.Password
+
 		var db Database
 		db.OpenConnection()
 		defer db.CloseConnection()
@@ -65,12 +66,7 @@ func registerAPItoEndpoint(router *gin.Engine) {
 	})
 }
 
-type user struct {
-	username string `json:"username"`
-	password string `json:"password"`
-}
-
-func runGin(router *gin.Engine, port int){
-	var str string = ":" + strconv.Itoa(port)
-	router.Run(str)
+type User struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }

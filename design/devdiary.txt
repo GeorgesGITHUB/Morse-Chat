@@ -101,3 +101,12 @@ O:
     - simplifies the implementation
     - has built in support for middleware
     - has a developer community online
+
+
+P: Creating a profile does not work
+Findings after investigating:
+  The status code for the POST request was 404. 
+  I disabled the WS while investigating.
+  After logging the POST API, I found the received body to be empty
+
+O: Fixed the issue by fixing JSON unmarshalling

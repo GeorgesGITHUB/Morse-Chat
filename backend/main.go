@@ -6,12 +6,19 @@ import (
 )
 
 func main(){
+	var db Database
+	db.OpenConnection()
+	db.DeleteTables()
+	db.CreateTables()
+	db.CloseConnection()
+
 	router := gin.Default()
+	
 	enableCORS(router)
 	registerAPItoEndpoint(router)
 	registerWStoEndpoint(router)
 	
-	runGin(router, 8080)
+	router.Run(":8080")
 }
 
 // use in a test suite later
