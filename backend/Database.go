@@ -87,23 +87,34 @@ func (db *Database) CloseConnection(){
     log.Println("Successfully closed connection to Database")
 }
 
-func (db *Database) PostUser(user_id int, username string) {
+func (db *Database) PostUser(username, password string) error {
 	_, err := db.postgres.Exec(`
-        INSERT INTO Users (user_id, username) VALUES ($1, $2)`, 
-        user_id, username,
+        INSERT INTO Users (username, password) VALUES ($1, $2)`, 
+        username, password,
     )
 
 	if err != nil {
-		log.Println("Failed adding user:", err)
-	} else {
-        log.Println("Successfully added User")
+        return err
+	}
+    return nil
+}
+
+func (db *Database) GetUser(username, password string) (int, error) {
+    var userID int
+    err := db.postgres.QueryRow(`
+        SELECT user_id FROM Users 
+        WHERE username = $1 AND password = $2`,
+        username, password).Scan(&userID)
+    
+    if err != nil {
+        return -1, err
     }
 
+    return userID, nil
 }
 
 func (db *Database) PostMessage(
-    sender_id int,
-    contentRaw string, contentText string, contentMorse string,
+    sender_id int, contentRaw, contentText, contentMorse string,
 ) (int, time.Time) {
 
     var message_id int
@@ -136,11 +147,24 @@ func (db *Database) CreateTables(){
 
 }
 
+func (db *Database) DeleteTables(){
+    exist,err:=db.tableExists("public","Users")  
+    if exist && err==nil {
+        db.deleteUsersTable()
+    }
+    
+    exist,err=db.tableExists("public","Messages")  
+    if exist && err==nil {
+        db.deleteMessagesTable()
+    }
+}
+
 func (db *Database) createUsersTable(){
 	_, err := db.postgres.Exec(`
         CREATE TABLE IF NOT EXISTS Users (
-            user_id INT PRIMARY KEY NOT NULL,
-            username VARCHAR(255) NOT NULL
+            user_id SERIAL PRIMARY KEY NOT NULL,
+            username VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL
         )
     `)
     if err != nil {
@@ -168,6 +192,26 @@ func (db *Database) createMessagesTable(){
     log.Println("Successfully created Messages table")
 }
 
+func (db *Database) deleteUsersTable(){
+    _, err := db.postgres.Exec(`
+    DROP TABLE public.users;
+    `)
+    if err != nil {
+        log.Fatal("Failed to delete User table:", err)
+    }
+    log.Println("Successfully deleted User table")
+}
+
+func (db *Database) deleteMessagesTable(){
+    _, err := db.postgres.Exec(`
+    DROP TABLE public.messages;
+    `)
+    if err != nil {
+        log.Fatal("Failed to delete Message table:", err)
+    }
+    log.Println("Successfully deleted Message table")
+}
+
 func (db *Database) tableExists(schema, table string) (bool, error) {
 	query := fmt.Sprintf(`
         SELECT EXISTS (
@@ -180,15 +224,4 @@ func (db *Database) tableExists(schema, table string) (bool, error) {
 		return false, err
 	}
 	return exists, nil
-}
-
-func (db *Database) DeleteTables(){
-    _, err := db.postgres.Exec(`
-        DROP TABLE public.messages;
-        DROP TABLE public.users;
-    `)
-    if err != nil {
-        log.Fatal("Failed to delete table:", err)
-    }
-    log.Println("Successfully deleted all tables")
 }

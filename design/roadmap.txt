@@ -23,26 +23,31 @@ Dockerfication: Automation of setup, build and run processes
 - Setup Docker containers for frontend, backend
 - Create an ez single execution to run the whole thing for devs or repo visitors
 
----------------------------- Active ----------------------------
-
 Persistence V2:
 - Replace AWS RDS dependency for a generic one
 - Dockerize
 
+---------------------------- Active ----------------------------
+Login: 
+    - Login, CreateProfile pages
+    - JS Service
+        - checks if user exists by fetching Go API (login)
+        - create user using Go API (createProfile)
+    - Refactors
+        - Remove profile presets and related
+
 ---------------------------- Drafts ----------------------------
 
-Login:
-- User creation
-- Authentication
-
-APIs
-- Frontend requests Backend API (Go Service) for chat logs JSON
-- Secure the enpoints
+Restore Chat History: 
+- Frontend service requests and loads chat logs, from Backend API
 
 Test and CI: (No CD b/c deployment cancelled)
-- Go and React testing for UI, logic and network
-- On git push, run test scripts on frontend & backend containers
+- Test endpoints, services, components, functions
+- On git push, run test scripts on all containers
 
+Security:
+- Authentication (login)
+- Secure the enpoints (APIs and WebSocket)
 
 Visual Logger: (Toggle btn + large text field)
 - displays logs in a frontend & backend box on screen
@@ -59,7 +64,7 @@ Messaging Change
 
 ---------------------------- Cancelled ----------------------------
 
-Cancelled due to costs associated to deploying Go
+Cancelled due to costs associated with deploying Go
 Deployment:
 - Separate Vercel Projects for frontend and backend
 - Separate both into different directories
@@ -69,5 +74,3 @@ Deployment:
 
 Cancelled due to time cost & feature/scope creep
 Group Chats:
-- use pub/sub logic in go
-- update persistence and cache

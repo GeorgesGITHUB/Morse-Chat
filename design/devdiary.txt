@@ -79,3 +79,34 @@ A:
   Therefore use host="postgres" instead of host="localhost" in the connection string
 O:
   Implemented both alternatives and it works
+
+
+P: Either Websocket or API endpoints works but not both.
+Findings after investigating:
+  I implemented the WS using net/http and the API using Gin framework
+  because I learned of the Gin after implementing WS.
+  At startup, I create a server listening on port 8080 for the WS and the API.
+
+  Starting two HTTP servers on the same port is technically possible, 
+  but it's generally not recommended because it can lead to 
+  unexpected behavior and port conflicts. 
+  Only one server will be able to bind to port 8080, 
+  and the other will likely fail with an error like "address already in use."
+
+A1: Register the API handlers to endpoints using "net/http"
+A2: Register the WS handlers to endpoints to Gin
+
+O: 
+  Choosing A2 because Gin 
+    - simplifies the implementation
+    - has built in support for middleware
+    - has a developer community online
+
+
+P: Creating a profile does not work
+Findings after investigating:
+  The status code for the POST request was 404. 
+  I disabled the WS while investigating.
+  After logging the POST API, I found the received body to be empty
+
+O: Fixed the issue by fixing JSON unmarshalling
