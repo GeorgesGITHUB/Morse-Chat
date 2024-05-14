@@ -3,6 +3,7 @@ import useWebSocket from 'react-use-websocket'
 import { Stack, Divider } from '@mui/joy'
 import Sidebar from './components/Sidebar'
 import ChatArea from './components/ChatArea'
+import fetchMessages from './services/fetchMessages'
 
 function App() {
   const WS_URL = 'ws://localhost:8080/ws'
@@ -18,6 +19,19 @@ function App() {
   const [msg, setMsg] = useState('')
   const [msgHistory, setMsgHistory] = useState([])
   const [displayMorse, setDisplayMorse] = useState(false)
+
+  // On component mount
+  useEffect( () => {
+    const firstFetch = async () => {
+      try {
+        const messages = await fetchMessages()
+        setMsgHistory(messages)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    firstFetch()
+  }, [])
 
   useEffect(() => {
     if (lastJsonMessage !== null) {

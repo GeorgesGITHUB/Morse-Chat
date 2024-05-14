@@ -45,5 +45,15 @@ func testDB() {
 	message_id, timestamp=db.PostMessage(2,"raw","text","morse")
 	log.Println("message_id", message_id, "timestamp:",timestamp)
 
+	messages, err := db.GetAllMessages()
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	for i, msg := range messages {
+		log.Println(i,msg)
+	}
+
 	log.Println("--- Finished testDB Routine ---")
 }

@@ -42,6 +42,22 @@ func registerAPItoEndpoint(router *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{"user_id": strconv.Itoa(user_id)})
 	})
 
+//	http://localhost:8080/api/messages?username=Bob&password=p1
+    router.GET("/api/messages", func(c *gin.Context) {
+		
+		var db Database
+		db.OpenConnection()
+		defer db.CloseConnection()
+		
+		messages, err := db.GetAllMessages()
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Can't get all msgs"})
+            return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"messages": messages})
+	})
+
 //	http://localhost:8080/api/users
     router.POST("/api/users", func(c *gin.Context) {
         var newUser User

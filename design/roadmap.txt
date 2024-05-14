@@ -27,7 +27,6 @@ Persistence V2:
 - Replace AWS RDS dependency for a generic one
 - Dockerize
 
----------------------------- Active ----------------------------
 Login: 
     - Login, CreateProfile pages
     - JS Service
@@ -36,10 +35,13 @@ Login:
     - Refactors
         - Remove profile presets and related
 
----------------------------- Drafts ----------------------------
+---------------------------- Active ----------------------------
 
 Restore Chat History: 
 - Frontend service requests and loads chat logs, from Backend API
+
+---------------------------- Drafts ----------------------------
+
 
 Test and CI: (No CD b/c deployment cancelled)
 - Test endpoints, services, components, functions

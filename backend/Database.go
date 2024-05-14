@@ -134,6 +134,29 @@ func (db *Database) PostMessage(
 	return message_id, timestamp
 }
 
+func (db *Database) GetAllMessages() ([]Message, error) {
+    rows, err := db.postgres.Query("SELECT * FROM Messages")
+    
+    if err != nil {
+        return nil, err
+    }
+
+    defer rows.Close()
+
+    // Iterate over the rows and scan each message into a Message struct
+    var messages []Message
+    for rows.Next() {
+        var msg Message
+        err := rows.Scan(&msg.Message_id, &msg.Sender_id, &msg.ContentRaw, &msg.ContentText, &msg.ContentMorse, &msg.Timestamp)
+        if err != nil {
+            panic(err)
+        }
+        messages = append(messages, msg)
+    }
+
+    return messages, nil
+}
+
 func (db *Database) CreateTables(){
     exist,err:=db.tableExists("public","Users")  
     if !exist || err!=nil {
