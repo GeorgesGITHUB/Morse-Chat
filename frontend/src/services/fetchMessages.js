@@ -11,9 +11,15 @@ async function fetchMessages() {
         }
 
         // converting into a promise of json
+        // { message: [ {'message_id', 1}, ... ,{'message_id', n} ]}
         const jsonPromise = await resPromise.json()
-
+        
+        if (jsonPromise.messages===null){
+            return []
+        }
+        
         // returning promise
+        // [ {'message_id', 1}, ... ,{'message_id', n} ]
         return jsonPromise.messages
 
     } catch (error) {
