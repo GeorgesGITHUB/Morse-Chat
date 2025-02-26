@@ -1,0 +1,21 @@
+Have an initalized postgres DB before running user-service
+
+Example Testing gRPC handlers w/o reflections (thus safer in prod)
+  $ grpcurl -plaintext -import-path ./proto -proto user_service.proto -d '{
+      "email": "test@example.com",
+      "password": "mypassword",
+      "name": "Test User"
+    }' localhost:50051 UserService/Register
+
+Q: Why return &pb.UserProfileResponse{UserId: user.ID, Email: user.Email, Name: user.Name}
+A: Instead of returning a full struct, returning a pointer improves performance
+
+Generate gRPC client and server outputs from root of service
+  From /user-service, run
+  $ protoc --go_out=./proto --go-grpc_out=./proto proto/user_service.proto
+
+P: What is Embedding Unimplemented gRPC Server in Go
+S: Generate the grpc server output using flag --go-grpc_out
+
+Q: Why GORM?
+A: High level wrapper for SQL that's DB agnostic

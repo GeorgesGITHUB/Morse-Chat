@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "./";
+
+service UserService {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc GetUserProfile (UserProfileRequest) returns (UserProfileResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+}
+
+message RegisterResponse {
+  string user_id = 1;
+  string message = 2;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message UserProfileRequest {
+  string user_id = 1;
+}
+
+message UserProfileResponse {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+}

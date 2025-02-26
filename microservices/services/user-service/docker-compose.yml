@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: .
+    ports:
+      - "50051:50051"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/users?sslmode=disable
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+# user-service → Defines the container running the User Service.
+# build: . → Builds the container using the Dockerfile in the current directory.
+# ports: → Maps port 50051 inside the container to port 50051 on the host machine.
+# depends_on: → Ensures that PostgreSQL starts before this service.
+# environment: → Sets environment variables (like database connection string).
+
+# postgres → Defines the PostgreSQL container.
+# image: postgres → Uses the official PostgreSQL image.
+# restart: always → Ensures the database restarts if it crashes.
+# environment: → Sets database credentials:
+# POSTGRES_USER: Database username.
+# POSTGRES_PASSWORD: Password for authentication.
+# POSTGRES_DB: The database name.
+# ports: → Maps port 5432 inside the container to port 5432 on the host.
+# volumes: → Uses a named volume (postgres_data) to persist database data.
+
+# Named Volume (postgres_data): Ensures that PostgreSQL data is saved, even if the container is restarted.

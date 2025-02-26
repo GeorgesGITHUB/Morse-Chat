@@ -1,0 +1,81 @@
+Core Features
+- User Registration & Auth (sign-up, login, OAuth, etc.)
+- Real-time Messaging (instant chat functionality)
+- Message History (storing messages in a database)
+- User Presence (who’s online or offline)
+- Push Notifications (for message alerts)
+X Media Sharing (images, videos, files)
+- Group Chats (one-to-many communication)
+- User Profiles (managing user settings and status)
+
+Microservices from Core Features
+- User Service: Manages user data, auth, and profiles.
+- Messaging Service: Handles msg sending, receiving, and store.
+- Presence Service: Tracks on/offline status and availability.
+- Notification Service: Sends push notifications.
+X File Service: Manages file uploads and storage.
+- Chat Room Service: Manages group chats, rooms, and members.
+- Search Service: Indexes messages for efficient searching.
+
+DB Design
+- User Services
+- Messaging Service
+- Presence Service
+
+Communication Protocols
+- gRPC and Web Socket
+
+Next... Scalability and Load Balancing, Containerization & Orchestration, API Gateway, Security, Monitoring & Logging, CI/CD Pipeline, Deployment & Hosting, User Interface, Testing, Iterative Development
+
+High Level Architecture
+  Frontend (React)
+    - Displays Chat
+    - Bidirectional translation between morse code and text
+    - Comm. with Backend (incl. establishing web sockets)
+  API Gateway
+    - Exposes single endpoint to Frontend
+    - Routes API requests to microservices
+    - Auth, Rate-limiting, Logging
+  Microservices (Go + Docker + K8)
+    User Service
+     - Manages user registr, auth (JWT), profile settings
+     - Uses PostgreSQL
+    Messaging Service
+     - Handles sending, receiving, storing messages
+     - Publishes messages to Kafka
+     - Uses web sockets, PostgreSQL
+    Presence Service
+     - Tracks user's offline/online status
+     - Redis to cache status, web sockets for instant updates
+    Notification Service
+     - Listens to Kafka topics (new messages, mentions, etc.)
+    Chat Room Service
+     - Manages group chats, membership, permissions
+     - Uses PostgreSQL for metadata
+    Search Service
+     - Elasticsearch to index messages
+     - Listens to Kafka for new messages and indexes them
+
+How Services Communicate
+    gRPC: for sync requests (e.g., fetching user profiles, retrieving messages).
+    Kafka: for async event-driven comm. (e.g., notifying users, indexing messages for search).
+    Redis: for fast access to real-time presence data.
+    WebSockets: Used for real-time chat updates.
+
+Implementing User-service
+  /user-service
+    ├── proto/             # Proto files
+    ├── db/                # Database logic
+    ├── handlers/          # gRPC handlers
+    ├── models/            # User model
+    ├── auth/              # JWT authentication logic
+    ├── main.go            # Entry point
+    ├── Dockerfile         # Containerization
+    ├── go.mod             # Go module dependencies
+    ├── config.yaml        # Configuration file
+
+  
+  1. Define the service API (using proto)
+  2. Create the project file structure
+  4. Implement API handlers
+  5. Setup the server
