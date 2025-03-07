@@ -1,3 +1,9 @@
+* Running a jenkins container *
+docker run -p 8080:8080 -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  --name jenkins \
+  jenkins/jenkins:lts
+
 Have an initalized postgres DB before running user-service
 
 Example Testing gRPC handlers w/o reflections (thus safer in prod)

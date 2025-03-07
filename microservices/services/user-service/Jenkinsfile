@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "user-service"
+        DOCKER_TAG = "latest"
+        REGISTRY = "georgesdockerid"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/GeorgesGITHUB/Morse-Chat.git'
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                sh 'go mod tidy'
+                sh 'go test ./...'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG ."
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
+                    sh "docker push $REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG"
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f k8s/deployment.yaml'
+            }
+        }
+    }
+}
